@@ -2,7 +2,7 @@ from flask import Flask,render_template,request,redirect
 from bokeh.plotting import figure, show, curdoc
 from bokeh.layouts import column
 from bokeh.resources import CDN
-from sb_functions import saps_bm, rperf_bm, cpw_bm,plot_bm, filter_sap, filter_power
+from sb_functions import saps_bm, rperf_bm, cpw_bm,plot_bm, filter_sap, filter_power, df
 
 bm_selected="saps"
 app=Flask(__name__)
