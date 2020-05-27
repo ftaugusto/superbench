@@ -1,1 +1,1 @@
-web: gunicorn superbench:super-bench
+web: gunicorn superbench:superbench
