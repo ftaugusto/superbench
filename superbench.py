@@ -14,6 +14,7 @@ def index():
 @app.route("/filter", methods=("POST", "GET"))
 def filter():
     global benchmark_table
+    global bm_selected
     if bm_selected == 'saps':
         fcert_date=" ".join(request.form["cer_date"].strip().split())
         ftech_partner=" ".join(request.form["tech_partner"].strip().split())
