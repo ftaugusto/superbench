@@ -34,6 +34,7 @@ def filter():
 
 @app.route("/plot_graph", methods=("POST", "GET"))
 def plot_graph():
+    global bm_selected
     servers=request.form.getlist("server")
     
     if len(servers) == 0:
