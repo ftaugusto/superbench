@@ -52,13 +52,13 @@ def plot_bm(title, num_servers, bench_fields, labels):
     lista=[]
     y_overlimit=0.15
 
-    for idx_server in num_servers:
+    for n,idx_server in zip(range(len(num_servers)),num_servers):
         i=int(idx_server)
         benchmark1.append(df[bench_fields[0]][i])
         bench_label1.append(str(df[bench_fields[0]][i]))
         benchmark2.append(df[bench_fields[1]][i])
         bench_label2.append(str(df[bench_fields[1]][i]))
-        server_label.append(df[labels[0]][i] + " / " + str(df[labels[3]][i]) + " / " + str(int(df[labels[1]][i])) + "/" + str(df[labels[2]][i]))
+        server_label.append(str(n+1) + ": " + str(df[labels[0]][i]) + " / " + str(df[labels[3]][i]) + " / " + str(int(df[labels[1]][i])) + "/" + str(df[labels[2]][i]))
         
     source = ColumnDataSource(data=dict(g_y=benchmark1,
                                         g_y2=benchmark2,
