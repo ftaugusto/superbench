@@ -8,6 +8,7 @@ app=Flask(__name__)
 
 @app.route("/", methods=("POST", "GET"))
 def index():
+    global bm_selected
     return render_template("index.html",bm_selected="saps")
 
 @app.route("/filter", methods=("POST", "GET"))
