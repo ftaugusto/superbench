@@ -6,7 +6,7 @@ from bokeh.models.tools import HoverTool
 from bokeh.resources import CDN
 import pandas
 
-df=pandas.DataFrame
+df=pandas.DataFrame()
 
 def saps_bm():
     global df
