@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request,redirect
-from bokeh.plotting import figure, output_file, show, curdoc
+from bokeh.plotting import figure, show, curdoc
 from bokeh.layouts import column
+from bokeh.resources import CDN
 from sb_functions import saps_bm, rperf_bm, cpw_bm,plot_bm, filter_sap, filter_power
 
 app=Flask(__name__)
@@ -50,11 +51,15 @@ def plot_graph():
         data_labels=["Nickname","Sockets","Total Cores","GHz"]
         fields=["rPerf p/core","rPerf"]
 
-    graphs_to_plot=plot_bm(plot_title,servers,fields,data_labels)
+    #graphs_to_plot=plot_bm(plot_title,servers,fields,data_labels)
     #show(column(graphs_to_plot))
-    curdoc().add_root(column(graphs_to_plot))
-  
-    return render_template("index.html",benchmark_table=benchmark_table, bm_selected=bm_selected,benchmark_title=benchmark_title)
+    #curdoc().add_root(column(graphs_to_plot))
+    cdn_js=CDN.js_files[0]
+    #cdn_css=CDN.css_files[0]
+    graphs_to_plot=plot_bm(plot_title,servers,fields,data_labels)
+    #return render_template("plot.html",html=graphs_to_plot)
+    return render_template("plot.html",script1=graphs_to_plot[0],div1=graphs_to_plot[1],cdn_js=cdn_js)
+    #return render_template("index.html",benchmark_table=benchmark_table, bm_selected=bm_selected,benchmark_title=benchmark_title)
 
 @app.route("/show_benchmark", methods=['POST','GET'])
 def show_benchmark():

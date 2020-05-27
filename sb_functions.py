@@ -1,7 +1,9 @@
-from bokeh.plotting import figure, output_file, show
+from bokeh.plotting import figure, show
 from bokeh.layouts import column
+from bokeh.embed import components, file_html
 from bokeh.models import Range1d,LinearAxis,ColumnDataSource, LabelSet
 from bokeh.models.tools import HoverTool
+from bokeh.resources import CDN
 import pandas
 
 def saps_bm():
@@ -128,8 +130,20 @@ def plot_bm(title, num_servers, bench_fields, labels):
             plot2.right[0].formatter.use_scientific = False
             lista.append(plot1)
             lista.append(plot2)
- 
-    return lista
+
+    #html = file_html(lista, CDN, "Benchmarks Plot")
+    script, div = components(lista)
+    newdiv=""
+
+    for division in div:
+        newdiv=newdiv + division.replace("\n","")
+
+    graphs=[script,newdiv]
+    #print(type(script)) 
+    #print(type(div))  
+    return graphs     
+    #return html
+    #return lista
 
 def filter_sap(fcert_date,ftech_partner,fserver_name,fcpu_arch):
     
