@@ -6,6 +6,8 @@ from bokeh.models.tools import HoverTool
 from bokeh.resources import CDN
 import pandas
 
+df=""
+
 def saps_bm():
     global df
 
@@ -44,6 +46,7 @@ def cpw_bm():
 
 def plot_bm(title, num_servers, bench_fields, labels):
     
+    global df
     benchmark1=[]
     server_label=[]
     bench_label1=[]
