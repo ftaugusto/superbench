@@ -4,7 +4,7 @@ from bokeh.layouts import column
 from bokeh.resources import CDN
 from sb_functions import saps_bm, rperf_bm, cpw_bm,plot_bm, filter_sap, filter_power
 
-global bm_selected="saps"
+bm_selected="saps"
 app=Flask(__name__)
 
 @app.route("/", methods=("POST", "GET"))
@@ -16,6 +16,7 @@ def index():
 def filter():
     global benchmark_table
     global bm_selected
+    bm_selected=request.form["bm_selected"]
     if bm_selected == 'saps':
         fcert_date=" ".join(request.form["cer_date"].strip().split())
         ftech_partner=" ".join(request.form["tech_partner"].strip().split())
@@ -37,6 +38,7 @@ def filter():
 @app.route("/plot_graph", methods=("POST", "GET"))
 def plot_graph():
     global bm_selected
+    bm_selected=request.form["bm_selected"]
     servers=request.form.getlist("server")
     
     if len(servers) == 0:

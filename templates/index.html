@@ -85,12 +85,14 @@
 		{% endif %}
 		<tr><td><button type="submit">Apply Filter</button></td></tr>
 		</table>
+		<input type="hidden" id="benchmark_id_filter" name="bm_selected" value="{{ bm_selected }}">
 		</form>
 		<br>
 
 	<div style="overflow-x:auto;">
 	    <form action="{{url_for('plot_graph')}}" method="post" name="plot_graph" enctype="multipart/form-data" formtarget="_blank">
 			<button type="submit">Plot Graphs</button>
+			<input type="hidden" id="benchmark_id_plot" name="bm_selected" value="{{ bm_selected }}">
 			{{ benchmark_table | safe }}
 		</form>
 	</div>
