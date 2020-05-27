@@ -1,1 +1,1 @@
-web: python3 superbench.py
+web: gunicorn superbench:super-bench
