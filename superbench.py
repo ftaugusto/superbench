@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request,redirect
-from bokeh.plotting import figure, output_file, show
+from bokeh.plotting import figure, output_file, show, curdoc
 from bokeh.layouts import column
 from sb_functions import saps_bm, rperf_bm, cpw_bm,plot_bm, filter_sap, filter_power
 
@@ -51,7 +51,8 @@ def plot_graph():
         fields=["rPerf p/core","rPerf"]
 
     graphs_to_plot=plot_bm(plot_title,servers,fields,data_labels)
-    show(column(graphs_to_plot))
+    #show(column(graphs_to_plot))
+    curdoc().add_root(column(graphs_to_plot))
   
     return render_template("index.html",benchmark_table=benchmark_table, bm_selected=bm_selected,benchmark_title=benchmark_title)
 
