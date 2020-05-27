@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>SuperBench</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="../static/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../static/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../static/vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../static/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../static/vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../static/css/util.css">
+	<link rel="stylesheet" type="text/css" href="../static/css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	<h2 class="Benchmark">SuperBench</h2>
+
+    <form action="{{url_for('show_benchmark')}}" method="post" name="select_benchmark" enctype="multipart/form-data">
+		<label for="benchmarks">Select the benchmark: </label>
+		<select name="benchmark" id="bm">
+		{% if bm_selected=="saps" %}
+		  <option selected value="saps">SAPs</option>
+		{% else %}
+		  <option value="saps">SAPs</option>
+		{% endif %}
+		{% if bm_selected=="rperf" %}
+		  <option selected value="rperf">Power Systems rPerf</option>
+		{% else %}
+		  <option value="rperf">Power Systems rPerf</option>
+		{% endif %}
+		{% if bm_selected=="cpw" %}
+		  <option selected value="cpw">Power Systems CPW</option>
+		{% else %}
+		  <option value="cpw">Power Systems CPW</option>
+		{% endif %}
+		</select> 
+		<button type="submit">Show</button>
+	</form>
+
+	{% if benchmark_table %}
+		<br>
+		{{ benchmark_title | safe }}
+		<form action="{{url_for('filter')}}" method="post" name="filter" enctype="multipart/form-data">
+		<table border=0 class="filter">
+			<tr><td>Filter Options:</td></tr>
+	    {% if bm_selected == 'saps' %}
+				<tr>
+					<td><label for="cer_date">Certification date:</label></td>
+					<td><input type="text" id="cer_date" name="cer_date" value="{{ cer_value }}"></td>
+				</tr>
+				<tr>
+					<td><label for="tech_partner">Technology Partner:</label></td>
+					<td><input type="text" id="tech_partner" name="tech_partner" value="{{ tech_value }}"></td>
+				</tr>
+				<tr>
+					<td><label for="server_name">Server name:</label></td>
+					<td><input type="text" id="server_name" name="server_name" value="{{ server_value }}"></td>
+				</tr>
+				<tr>
+					<td><label for="cpu_arch">CPU Architecture:</label></td>
+					<td><input type="text" id="cpu_arch" name="cpu_arch" value="{{ cpu_value }}"></td>
+				</tr>
+		{% else %}
+				<tr>
+					<td><label for="model">Model Type:</label></td>
+					<td><input type="text" id="model" name="model" value="{{ model_value }}"></td>
+				</tr>
+				<tr>
+					<td><label for="server_name">Nickname:</label></td>
+					<td><input type="text" id="server_name" name="server_name" value="{{ server_value }}"></td>
+				</tr>
+				<tr>
+					<td><label for="cpu_arch">CPU Architecture:</label></td>
+					<td><input type="text" id="cpu_arch" name="cpu_arch" value="{{ cpu_value }}"></td>
+				</tr>
+		{% endif %}
+		<tr><td><button type="submit">Apply Filter</button></td></tr>
+		</table>
+		</form>
+		<br>
+
+	<div style="overflow-x:auto;">
+	    <form action="{{url_for('plot_graph')}}" method="post" name="plot_graph" enctype="multipart/form-data" formtarget="_blank">
+			<button type="submit">Plot Graphs</button>
+			{{ benchmark_table | safe }}
+		</form>
+	</div>
+	{% endif %}
+	
+<!--===============================================================================================-->	
+	<script src="../static/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../static/vendor/bootstrap/js/popper.js"></script>
+	<script src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../static/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../static/js/main.js"></script>
+
+</body>
+</html>
