@@ -4,7 +4,7 @@ from bokeh.layouts import column
 from bokeh.resources import CDN
 from sb_functions import saps_bm, rperf_bm, cpw_bm,plot_bm, filter_sap, filter_power
 
-bm_selected="saps"
+global bm_selected="saps"
 app=Flask(__name__)
 
 @app.route("/", methods=("POST", "GET"))
