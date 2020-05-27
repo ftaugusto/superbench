@@ -6,47 +6,24 @@ from bokeh.models.tools import HoverTool
 from bokeh.resources import CDN
 import pandas
 
-df=pandas.DataFrame()
+def saps_bm(benchm_sel):
+ 
+    df_saps=select_data(benchm_sel)
+    return df_saps.to_html(escape=False,index=False)
 
-def saps_bm():
-    global df
+def rperf_bm(benchm_sel):
 
-    df=pandas.read_csv("sd.csv",sep=";",engine='python')
-    cols=[4,5,10,11,12,14,15,16,17,18,19,20,22,23,24,25]
-    df=df.drop(df.columns[cols],axis=1)
-    df['Certification Number']=df[['Certification Number','Pdf Link']].astype(str).apply(lambda x: "<a href='" + x['Pdf Link'] + "' target='_blank'>" + x['Certification Number'] + "</a>",axis=1)
-    df['tmp']=df.index
-    df.insert(loc=0,column='Graph',value='')
-    df['Graph']=df.tmp.apply(lambda x: "<input type='checkbox' name='server' id='" + str(x) + "' value=" + str(x)+ ">")
-    df['saps_core']=round(df[['saps','Cores','Processors']].astype(float).apply(lambda x: x['saps']/x['Cores'] if x['Cores']>0 else x['saps']/x['Processors'],axis=1),1)
-    df=df.drop(columns=['Pdf Link','tmp'],axis=1)
-    return df.to_html(escape=False,index=False)
+    df_rperf=select_data(benchm_sel)
+    return df_rperf.to_html(escape=False,na_rep="n/a",index=False)
 
-def rperf_bm():
-    global df
+def cpw_bm(benchm_sel):
 
-    df=pandas.read_excel("power_benchmark.xlsx","rPerf")
-    df['tmp']=df.index
-    df.insert(loc=0,column='Graph',value='')
-    df['Graph']=df.tmp.apply(lambda x: "<input type='checkbox' name='server' id='" + "' value=" + str(x)+ ">")
-    df.drop(columns='tmp',axis=1,inplace=True)
-    df['rPerf p/core']=round(df['rPerf p/core'],2)
-    return df.to_html(escape=False,na_rep="n/a",index=False)
+    df_cpw=select_data(benchm_sel)
+    return df_cpw.to_html(escape=False,na_rep="n/a",index=False)
 
-def cpw_bm():
-    global df
-
-    df=pandas.read_excel("power_benchmark.xlsx","CPW")
-    df['tmp']=df.index
-    df.insert(loc=0,column='Graph',value='')
-    df['Graph']=df.tmp.apply(lambda x: "<input type='checkbox' name='server' id='" + "' value=" + str(x)+ ">")
-    df.drop(columns='tmp',axis=1,inplace=True)
-    df['CPW p/core']=round(df['CPW p/core'],2)
-    return df.to_html(escape=False,na_rep="n/a",index=False)
-
-def plot_bm(title, num_servers, bench_fields, labels):
+def plot_bm(title, num_servers, bench_fields, labels,benchm_sel):
     
-    global df
+    df=select_data(benchm_sel)
     benchmark1=[]
     server_label=[]
     bench_label1=[]
@@ -148,8 +125,37 @@ def plot_bm(title, num_servers, bench_fields, labels):
     #return html
     #return lista
 
-def filter_sap(fcert_date,ftech_partner,fserver_name,fcpu_arch):
+def select_data(benchmark_selected):
+    if benchmark_selected == "saps":
+        df=pandas.read_csv("sd.csv",sep=";",engine='python')
+        cols=[4,5,10,11,12,14,15,16,17,18,19,20,22,23,24,25]
+        df=df.drop(df.columns[cols],axis=1)
+        df['Certification Number']=df[['Certification Number','Pdf Link']].astype(str).apply(lambda x: "<a href='" + x['Pdf Link'] + "' target='_blank'>" + x['Certification Number'] + "</a>",axis=1)
+        df['tmp']=df.index
+        df.insert(loc=0,column='Graph',value='')
+        df['Graph']=df.tmp.apply(lambda x: "<input type='checkbox' name='server' id='" + str(x) + "' value=" + str(x)+ ">")
+        df['saps_core']=round(df[['saps','Cores','Processors']].astype(float).apply(lambda x: x['saps']/x['Cores'] if x['Cores']>0 else x['saps']/x['Processors'],axis=1),1)
+        df=df.drop(columns=['Pdf Link','tmp'],axis=1)
+    elif benchmark_selected == "cpw":
+        df=pandas.read_excel("power_benchmark.xlsx","CPW")
+        df['tmp']=df.index
+        df.insert(loc=0,column='Graph',value='')
+        df['Graph']=df.tmp.apply(lambda x: "<input type='checkbox' name='server' id='" + "' value=" + str(x)+ ">")
+        df.drop(columns='tmp',axis=1,inplace=True)
+        df['CPW p/core']=round(df['CPW p/core'],2)
+    else:
+        df=pandas.read_excel("power_benchmark.xlsx","rPerf")
+        df['tmp']=df.index
+        df.insert(loc=0,column='Graph',value='')
+        df['Graph']=df.tmp.apply(lambda x: "<input type='checkbox' name='server' id='" + "' value=" + str(x)+ ">")
+        df.drop(columns='tmp',axis=1,inplace=True)
+        df['rPerf p/core']=round(df['rPerf p/core'],2)
+    return(df)
+
+
+def filter_sap(benchm_sel,fcert_date,ftech_partner,fserver_name,fcpu_arch):
     
+    df=select_data(benchm_sel)
     filter1=df['Certification Date'].str.contains(fcert_date,case=False)
     filter2=df['Technology Partner'].str.contains(ftech_partner,case=False)
     filter3=df['Server Name'].str.contains(fserver_name,case=False)
@@ -157,8 +163,10 @@ def filter_sap(fcert_date,ftech_partner,fserver_name,fcpu_arch):
     
     return df[filter1 & filter2 & filter3 & filter4].to_html(escape=False,index=False)
 
-def filter_power(fmodel,fserver_name,fcpu_arch):
+def filter_power(benchm_sel,fmodel,fserver_name,fcpu_arch):
     
+    df=select_data(benchm_sel)
+
     filter1=df['Model-Type'].str.contains(fmodel,case=False)
     filter2=df['Nickname'].str.contains(fserver_name,case=False)
     filter3=df['CPU Arch'].str.contains(fcpu_arch,case=False)
