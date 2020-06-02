@@ -22,18 +22,20 @@ def filter():
         ftech_partner=" ".join(request.form["tech_partner"].strip().split())
         fserver_name=" ".join(request.form["server_name"].strip().split())
         fcpu_arch=" ".join(request.form["cpu_arch"].strip().split())
-        benchmark_table=filter_sap(bm_selected,fcert_date,ftech_partner,fserver_name,fcpu_arch)
+        fsockets=" ".join(request.form["sockets"].strip().split())
+        benchmark_table=filter_sap(bm_selected,fcert_date,ftech_partner,fserver_name,fcpu_arch,fsockets)
         return render_template("index.html",benchmark_table=benchmark_table, bm_selected=bm_selected,
         benchmark_title=benchmark_title,cer_value=fcert_date,
-        tech_value=ftech_partner,server_value=fserver_name,cpu_value=fcpu_arch)
+        tech_value=ftech_partner,server_value=fserver_name,cpu_value=fcpu_arch,sockets_value=fsockets)
     else:
         fmodel=" ".join(request.form["model"].strip().split())
         fserver_name=" ".join(request.form["server_name"].strip().split())
         fcpu_arch=" ".join(request.form["cpu_arch"].strip().split())
-        benchmark_table=filter_power(bm_selected,fmodel,fserver_name,fcpu_arch)
+        fsockets=" ".join(request.form["sockets"].strip().split())
+        benchmark_table=filter_power(bm_selected,fmodel,fserver_name,fcpu_arch,fsockets)
         return render_template("index.html",benchmark_table=benchmark_table, bm_selected=bm_selected,
         benchmark_title=benchmark_title,model_value=fmodel,
-        server_value=fserver_name,cpu_value=fcpu_arch)
+        server_value=fserver_name,cpu_value=fcpu_arch,sockets_value=fsockets)
 
 @app.route("/plot_graph", methods=("POST", "GET"))
 def plot_graph():

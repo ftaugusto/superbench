@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<img src="../static/images/superbench.png" alt="superbench">
+	<p><a href="../static/about.html">Instructions/About</a></p>
 	<title>SuperBench</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +24,7 @@
 <!--===============================================================================================-->
 </head>
 <body>
-	<h2 class="Benchmark">SuperBench</h2>
+	<!--<h2 class="Benchmark">SuperBench</h2>-->
 
     <form action="{{url_for('show_benchmark')}}" method="post" name="select_benchmark" enctype="multipart/form-data">
 		<label for="benchmarks">Select the benchmark: </label>
@@ -69,6 +71,10 @@
 					<td><label for="cpu_arch">CPU Architecture:</label></td>
 					<td><input type="text" id="cpu_arch" name="cpu_arch" value="{{ cpu_value }}"></td>
 				</tr>
+				<tr>
+					<td><label for="Sockets">Processors:</label></td>
+					<td><input type="text" id="sockets" name="sockets" value="{{ sockets_value }}"></td>
+				</tr>
 		{% else %}
 				<tr>
 					<td><label for="model">Model Type:</label></td>
@@ -81,6 +87,10 @@
 				<tr>
 					<td><label for="cpu_arch">CPU Architecture:</label></td>
 					<td><input type="text" id="cpu_arch" name="cpu_arch" value="{{ cpu_value }}"></td>
+				</tr>
+				<tr>
+					<td><label for="Sockets">Sockets:</label></td>
+					<td><input type="text" id="sockets" name="sockets" value="{{ sockets_value }}"></td>
 				</tr>
 		{% endif %}
 		<tr><td><button type="submit">Apply Filter</button></td></tr>

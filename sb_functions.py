@@ -3,26 +3,21 @@ from bokeh.layouts import column
 from bokeh.embed import components, file_html
 from bokeh.models import Range1d,LinearAxis,ColumnDataSource, LabelSet
 from bokeh.models.tools import HoverTool
-from bokeh.resources import CDN
 import pandas
 
-def saps_bm(benchm_sel):
- 
+def saps_bm(benchm_sel): 
     df_saps=select_data(benchm_sel)
     return df_saps.to_html(escape=False,index=False)
 
 def rperf_bm(benchm_sel):
-
     df_rperf=select_data(benchm_sel)
     return df_rperf.to_html(escape=False,na_rep="n/a",index=False)
 
 def cpw_bm(benchm_sel):
-
     df_cpw=select_data(benchm_sel)
     return df_cpw.to_html(escape=False,na_rep="n/a",index=False)
 
 def plot_bm(title, num_servers, bench_fields, labels,benchm_sel):
-    
     df=select_data(benchm_sel)
     benchmark1=[]
     server_label=[]
@@ -64,9 +59,7 @@ def plot_bm(title, num_servers, bench_fields, labels,benchm_sel):
         plot1.yaxis.axis_label = bench_fields[0]
         
         hover=HoverTool()
-        hover_tooltips = [
-                        (bench_fields[1], "@s_values2")
-                    ]
+        hover_tooltips = [(bench_fields[1], "@s_values2")]
         plot2 = figure(x_range=server_label,title=title, plot_width=800, plot_height=600,toolbar_location=None)
         hover.tooltips = hover_tooltips
         plot2.add_tools(hover)
@@ -79,10 +72,10 @@ def plot_bm(title, num_servers, bench_fields, labels,benchm_sel):
         plot2.xaxis.major_label_orientation = 'vertical'
         plot2.yaxis.axis_label = bench_fields[1]
         
-        if graph_type == 0:
+        if graph_type == 0: #Somente gráficos de barra
             lista.append(plot1)
             lista.append(plot2)
-        else:
+        else:  #Monta os gráficos mistos (barras e linha)
             hover=HoverTool()
             hover_tooltips = [
                         (bench_fields[0], "@s_values1"),
@@ -118,12 +111,8 @@ def plot_bm(title, num_servers, bench_fields, labels,benchm_sel):
     for division in div:
         newdiv=newdiv + division.replace("\n","")
 
-    graphs=[script,newdiv]
-    #print(type(script)) 
-    #print(type(div))  
+    graphs=[script,newdiv]  
     return graphs     
-    #return html
-    #return lista
 
 def select_data(benchmark_selected):
     if benchmark_selected == "saps":
@@ -153,22 +142,21 @@ def select_data(benchmark_selected):
     return(df)
 
 
-def filter_sap(benchm_sel,fcert_date,ftech_partner,fserver_name,fcpu_arch):
-    
+def filter_sap(benchm_sel,fcert_date,ftech_partner,fserver_name,fcpu_arch,fsockets):
     df=select_data(benchm_sel)
     filter1=df['Certification Date'].str.contains(fcert_date,case=False)
     filter2=df['Technology Partner'].str.contains(ftech_partner,case=False)
     filter3=df['Server Name'].str.contains(fserver_name,case=False)
     filter4=df['CPU Architecture'].str.contains(fcpu_arch,case=False)
+    filter5=df['Processors'].apply(str).str.contains(fsockets,case=False)
     
-    return df[filter1 & filter2 & filter3 & filter4].to_html(escape=False,index=False)
+    return df[filter1 & filter2 & filter3 & filter4 & filter5].to_html(escape=False,index=False)
 
-def filter_power(benchm_sel,fmodel,fserver_name,fcpu_arch):
-    
+def filter_power(benchm_sel,fmodel,fserver_name,fcpu_arch,fsockets):
     df=select_data(benchm_sel)
-
     filter1=df['Model-Type'].str.contains(fmodel,case=False)
     filter2=df['Nickname'].str.contains(fserver_name,case=False)
     filter3=df['CPU Arch'].str.contains(fcpu_arch,case=False)
+    filter4=df['Sockets'].apply(str).str.contains(fsockets,case=False)
     
-    return df[filter1 & filter2 & filter3].to_html(escape=False,index=False)
+    return df[filter1 & filter2 & filter3 & filter4].to_html(escape=False,index=False)
