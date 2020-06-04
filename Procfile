@@ -1,1 +1,1 @@
-web: gunicorn superbench:app
+web: gunicorn superbench:server
