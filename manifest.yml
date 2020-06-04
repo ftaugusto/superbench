@@ -1,0 +1,12 @@
+applications:
+- command: gunicorn --bind 0.0.0.0:8080 superbench:server
+  domain: null
+  env:
+    FLASK_APP: superbench
+    FLASK_DEBUG: false
+  host: null
+  instances: 1
+  memory: 128M
+  name: SuperBench
+  routes:
+  - route: SuperBench.us-south.cf.appdomain.cloud

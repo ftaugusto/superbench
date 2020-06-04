@@ -5,14 +5,14 @@ from bokeh.resources import CDN
 from sb_functions import saps_bm, rperf_bm, cpw_bm,plot_bm, filter_sap, filter_power
 
 bm_selected="saps"
-app=Flask(__name__)
+server=Flask(__name__)
 
-@app.route("/", methods=("POST", "GET"))
+@server.route("/", methods=("POST", "GET"))
 def index():
     global bm_selected
     return render_template("index.html",bm_selected="saps")
 
-@app.route("/filter", methods=("POST", "GET"))
+@server.route("/filter", methods=("POST", "GET"))
 def filter():
     global benchmark_table
     global bm_selected
@@ -37,7 +37,7 @@ def filter():
         benchmark_title=benchmark_title,model_value=fmodel,
         server_value=fserver_name,cpu_value=fcpu_arch,sockets_value=fsockets)
 
-@app.route("/plot_graph", methods=("POST", "GET"))
+@server.route("/plot_graph", methods=("POST", "GET"))
 def plot_graph():
     global bm_selected
     bm_selected=request.form["bm_selected"]
@@ -69,7 +69,7 @@ def plot_graph():
     return render_template("plot.html",script1=graphs_to_plot[0],div1=graphs_to_plot[1],cdn_js=cdn_js)
     #return render_template("index.html",benchmark_table=benchmark_table, bm_selected=bm_selected,benchmark_title=benchmark_title)
 
-@app.route("/show_benchmark", methods=['POST','GET'])
+@server.route("/show_benchmark", methods=['POST','GET'])
 def show_benchmark():
     global bm_selected
     global benchmark_table
@@ -89,5 +89,5 @@ def show_benchmark():
     return render_template("index.html",benchmark_table=benchmark_table,bm_selected=bm_selected,benchmark_title=benchmark_title)
 
 if __name__ == '__main__':
-    app.debug=True
-    app.run()
+    server.debug=True
+    server.run()

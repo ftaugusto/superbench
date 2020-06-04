@@ -1,0 +1,12 @@
+applications:
+- command: python manage.py start 0.0.0.0:$PORT
+  domain: null
+  env:
+    FLASK_APP: app
+    FLASK_DEBUG: false
+  host: null
+  instances: 1
+  memory: 64M
+  name: SuperBench
+  routes:
+  - route: SuperBench.us-south.cf.appdomain.cloud
