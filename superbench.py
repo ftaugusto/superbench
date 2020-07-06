@@ -23,6 +23,7 @@ def filter():
         fserver_name=" ".join(request.form["server_name"].strip().split())
         fcpu_arch=" ".join(request.form["cpu_arch"].strip().split())
         fsockets=" ".join(request.form["sockets"].strip().split())
+        benchmark_title=request.form["benchmark_title"]
         benchmark_table=filter_sap(bm_selected,fcert_date,ftech_partner,fserver_name,fcpu_arch,fsockets)
         return render_template("index.html",benchmark_table=benchmark_table, bm_selected=bm_selected,
         benchmark_title=benchmark_title,cer_value=fcert_date,
@@ -32,6 +33,7 @@ def filter():
         fserver_name=" ".join(request.form["server_name"].strip().split())
         fcpu_arch=" ".join(request.form["cpu_arch"].strip().split())
         fsockets=" ".join(request.form["sockets"].strip().split())
+        benchmark_title=request.form["benchmark_title"]
         benchmark_table=filter_power(bm_selected,fmodel,fserver_name,fcpu_arch,fsockets)
         return render_template("index.html",benchmark_table=benchmark_table, bm_selected=bm_selected,
         benchmark_title=benchmark_title,model_value=fmodel,
