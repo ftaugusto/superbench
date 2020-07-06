@@ -2,7 +2,6 @@
 /*//////////////////////////////////////////////////////////////////
 [ Table ]*/
 
-
 table.dataframe {
   font-family: "Times New Roman", Times, serif;
   border: 1px solid #FFFFFF;
@@ -31,6 +30,7 @@ table.dataframe thead th {
   color: #FFFFFF;
   text-align: center;
   border-left: 2px solid #FFFFFF;
+  cursor: pointer;
 }
 table.dataframe thead th:first-child {
   border-left: none;

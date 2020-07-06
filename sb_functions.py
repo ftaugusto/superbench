@@ -7,15 +7,27 @@ import pandas
 
 def saps_bm(benchm_sel): 
     df_saps=select_data(benchm_sel)
-    return df_saps.to_html(escape=False,index=False)
+    html=df_saps.to_html(escape=False,index=False)
+    html=prepare_sort(html,benchm_sel)
+    
+    return html
+    #return df_saps.to_html(escape=False,index=False)
 
 def rperf_bm(benchm_sel):
     df_rperf=select_data(benchm_sel)
-    return df_rperf.to_html(escape=False,na_rep="n/a",index=False)
+    html=df_rperf.to_html(escape=False,na_rep="n/a",index=False)
+    html=prepare_sort(html,benchm_sel)
+    
+    return html
+    #return df_rperf.to_html(escape=False,na_rep="n/a",index=False)
 
 def cpw_bm(benchm_sel):
     df_cpw=select_data(benchm_sel)
-    return df_cpw.to_html(escape=False,na_rep="n/a",index=False)
+    html=df_cpw.to_html(escape=False,na_rep="n/a",index=False)
+    html=prepare_sort(html,benchm_sel)
+    
+    return html
+    #return df_cpw.to_html(escape=False,na_rep="n/a",index=False)
 
 def plot_bm(title, num_servers, bench_fields, labels,benchm_sel):
     df=select_data(benchm_sel)
@@ -150,7 +162,11 @@ def filter_sap(benchm_sel,fcert_date,ftech_partner,fserver_name,fcpu_arch,fsocke
     filter4=df['CPU Architecture'].str.contains(fcpu_arch,case=False)
     filter5=df['Processors'].apply(str).str.contains(fsockets,case=False)
     
-    return df[filter1 & filter2 & filter3 & filter4 & filter5].to_html(escape=False,index=False)
+    html=df[filter1 & filter2 & filter3 & filter4 & filter5].to_html(escape=False,index=False)
+    html=prepare_sort(html,benchm_sel)
+
+    return html
+    #return df[filter1 & filter2 & filter3 & filter4 & filter5].to_html(escape=False,index=False)
 
 def filter_power(benchm_sel,fmodel,fserver_name,fcpu_arch,fsockets):
     df=select_data(benchm_sel)
@@ -159,4 +175,54 @@ def filter_power(benchm_sel,fmodel,fserver_name,fcpu_arch,fsockets):
     filter3=df['CPU Arch'].str.contains(fcpu_arch,case=False)
     filter4=df['Sockets'].apply(str).str.contains(fsockets,case=False)
     
-    return df[filter1 & filter2 & filter3 & filter4].to_html(escape=False,index=False)
+    html=df[filter1 & filter2 & filter3 & filter4].to_html(escape=False,index=False)
+    html=prepare_sort(html,benchm_sel)
+
+    return html
+    #return df[filter1 & filter2 & filter3 & filter4].to_html(escape=False,index=False)
+
+def prepare_sort(html_out,benchmark):
+    html_tmp=html_out
+    if benchmark == "saps":
+        repl_dict={"<table border":"<table id='bm_table' border",
+            "<th>Certification Number</th>":"<th onclick='sortTable(1)'>Certification Number</th>",
+            "<th>Certification Date</th>":"<th onclick='sortTable(2)'>Certification Date</th>",
+            "<th>Technology Partner</th>":"<th onclick='sortTable(3)'>Technology Partner</th>",
+            "<th>Server Name</th>":"<th onclick='sortTable(4)'>Server Name</th>",
+            "<th>CPU Architecture</th>":"<th onclick='sortTable(5)'>CPU Architecture</th>",
+            "<th>CPU Speed</th>":"<th onclick='sortTable(6)'>CPU Speed</th>",
+            "<th>Processors</th>":"<th onclick='sortTable(7)'>Processors</th>",
+            "<th>Cores</th>":"<th onclick='sortTable(8)'>Cores</th>",
+            "<th>saps</th>":"<th onclick='sortTable(9)'>saps</th>",
+            "<th>saps_core</th>":"<th onclick='sortTable(10)'>saps_core</th>"}
+    elif benchmark == "cpw":
+        repl_dict={"<table border":"<table id='bm_table' border",
+                "<th>Model-Type</th>":"<th onclick='sortTable(1)'>Model-Type</th>",
+                "<th>Nickname</th>":"<th onclick='sortTable(2)'>Nickname</th>",
+                "<th>CPU Arch</th>":"<th onclick='sortTable(3)'>CPU Arch</th>",
+                "<th>Sockets</th>":"<th onclick='sortTable(4)'>Sockets</th>",
+                "<th>Cores per Socket</th>":"<th onclick='sortTable(5)'>Cores per Socket</th>",
+                "<th>Total Cores</th>":"<th onclick='sortTable(6)'>Total Cores</th>",
+                "<th>GHz</th>":"<th onclick='sortTable(7)'>GHz</th>",
+                "<th>CPW</th>":"<th onclick='sortTable(8)'>CPW</th>",
+                "<th>CPW p/core</th>":"<th onclick='sortTable(9)'>CPW p/core</th>"}
+    else:
+        repl_dict={"<table border":"<table id='bm_table' border",
+                "<th>Model-Type</th>":"<th onclick='sortTable(1)'>Model-Type</th>",
+                "<th>Nickname</th>":"<th onclick='sortTable(2)'>Nickname</th>",
+                "<th>CPU Arch</th>":"<th onclick='sortTable(3)'>CPU Arch</th>",
+                "<th>Sockets</th>":"<th onclick='sortTable(4)'>Sockets</th>",
+                "<th>Cores per Socket</th>":"<th onclick='sortTable(5)'>Cores per Socket</th>",
+                "<th>Total Cores</th>":"<th onclick='sortTable(6)'>Total Cores</th>",
+                "<th>GHz</th>":"<th onclick='sortTable(7)'>GHz</th>",
+                "<th>SMT1 rPerf</th>":"<th onclick='sortTable(8)'>SMT1 rPerf</th>",
+                "<th>SMT2 rPerf</th>":"<th onclick='sortTable(9)'>SMT2 rPerf</th>",
+                "<th>SMT4 rPerf</th>":"<th onclick='sortTable(10)'>SMT4 rPerf</th>",
+                "<th>SMT8 rPerf</th>":"<th onclick='sortTable(11)'>SMT8 rPerf</th>",
+                "<th>rPerf</th>":"<th onclick='sortTable(12)'>rPerf</th>",
+                "<th>rPerf p/core</th>":"<th onclick='sortTable(13)'>rPerf p/core</th>"}
+
+    for key in repl_dict:
+        html_tmp=html_tmp.replace(key,repl_dict[key])
+        
+    return(html_tmp)
